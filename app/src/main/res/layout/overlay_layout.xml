@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/overlayLayout"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#80FFFFFF"
+    android:gravity="center"
+    android:padding="16dp">
+
+<TextView
+android:id="@+id/pressedButtonsTextView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Pressed Buttons:"
+android:textColor="#000000"
+android:textSize="18sp"
+android:paddingBottom="8dp"/>
+
+<TextView
+android:id="@+id/leftStickTextView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Left Stick: X=0, Y=0"
+android:textColor="#000000"
+android:textSize="16sp"
+android:paddingBottom="4dp"/>
+
+<TextView
+android:id="@+id/rightStickTextView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Right Stick: X=0, Y=0"
+android:textColor="#000000"
+android:textSize="16sp"
+android:paddingBottom="4dp"/>
+
+    </LinearLayout>

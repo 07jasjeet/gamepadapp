@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">gamepadapp</string>
+    <string name="accessibility_service_description">Gamepad gesture service</string>
+</resources>
