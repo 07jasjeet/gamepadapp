@@ -1,27 +1,29 @@
 
 package com.example.gamepadapp
 
-import android.os.SystemClock
 import android.view.MotionEvent
 import android.view.View
 
-class TouchEventSimulator(private val view: View) {
+class TouchEventSimulator(
+    private val view: View,
+    private val onEvent: (MotionEvent) -> Unit
+) {
     private var isTouchActive = false
     private var lastTouchX = 0f
     private var lastTouchY = 0f
 
-    fun simulateTouch(touchX: Float, touchY: Float, isActive: Boolean) {
-        val eventTime = SystemClock.uptimeMillis()
+    fun simulateTouch(touchX: Float, touchY: Float, downTime: Long, eventTime: Long, isActive: Boolean) {
 
         if (!isTouchActive && isActive) {
             val downEvent = MotionEvent.obtain(
-                eventTime,
+                downTime,
                 eventTime,
                 MotionEvent.ACTION_DOWN,
                 touchX,
                 touchY,
                 0
             )
+            onEvent(downEvent)
             view.dispatchTouchEvent(downEvent)
             downEvent.recycle()
             isTouchActive = true
@@ -34,6 +36,7 @@ class TouchEventSimulator(private val view: View) {
                 touchY,
                 0
             )
+            onEvent(moveEvent)
             view.dispatchTouchEvent(moveEvent)
             moveEvent.recycle()
         } else if (isTouchActive && !isActive) {
@@ -45,6 +48,7 @@ class TouchEventSimulator(private val view: View) {
                 lastTouchY,
                 0
             )
+            onEvent(upEvent)
             view.dispatchTouchEvent(upEvent)
             upEvent.recycle()
             isTouchActive = false

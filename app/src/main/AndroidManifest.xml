@@ -122,7 +122,16 @@
     <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS"/>
     <uses-permission android:name="android.permission.TRANSMIT_IR"/>
     <uses-permission android:name="android.permission.USE_SIP" android:required="false"/>
+
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
+    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.INJECT_EVENTS"
+        tools:ignore="ProtectedPermissions"/>
+
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW"/>
     <uses-permission android:name="android.permission.READ_INSTALL_SESSIONS"/>
     <uses-permission android:name="android.permission.READ_OWNER_DATA"/>
@@ -134,7 +143,6 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
 
-
     <uses-permission android:name="com.tencent.msg.permission.pushnotify"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES"/>
 
@@ -143,9 +151,6 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
     <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
     <queries>
         <package android:name="com.raed.drawing" />
     </queries>
@@ -161,7 +166,7 @@
         android:theme="@style/Theme.Gamepadapp"
         tools:targetApi="31">
         <service
-            android:name=".GamepadAccessibilityService"
+            android:name=".GlobalTouchService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
             android:exported="false">
             <intent-filter>
@@ -173,6 +178,7 @@
         </service>
 
         <service android:name=".OverlayService"
+            android:foregroundServiceType="specialUse"
             android:exported="false"/>
 
         <activity
@@ -190,6 +196,18 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
         </activity>
+
+        <service
+            android:name=".GamepadInputService"
+            android:exported="true"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method"/>
+        </service>
     </application>
 
 </manifest>
