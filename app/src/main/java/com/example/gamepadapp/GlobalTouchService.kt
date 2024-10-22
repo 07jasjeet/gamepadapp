@@ -78,8 +78,12 @@ class GlobalTouchService(
     override fun onInterrupt() {}
 
     override fun onKeyEvent(event: KeyEvent?): Boolean {
+        event ?: super.onKeyEvent(event)
+
         Log.d("test", "Key event: " + event.toString())
-        return super.onKeyEvent(event)
+        scope.launch { touchCommunicator.keyEventFlow.emit(event) }
+
+        return false
     }
 
     private var previousLeftEvent: Util.JoystickTouchEvent? = null

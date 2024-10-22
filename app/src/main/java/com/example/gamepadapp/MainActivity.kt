@@ -7,18 +7,24 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -41,6 +47,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             GamepadappTheme {
                 val touchEvent by touchCommunicator.touchFlow.collectAsState(null)
+                val keyEvent by touchCommunicator.keyEventFlow.collectAsState(null)
+                var pressedButtons by remember { mutableStateOf(setOf<String>()) }
+
+                LaunchedEffect(key1 = keyEvent) {
+                    keyEvent?.run {
+                        when (action) {
+                            KeyEvent.ACTION_DOWN -> {
+                                pressedButtons = pressedButtons + KeyEvent.keyCodeToString(keyCode)
+                            }
+                            KeyEvent.ACTION_UP -> {
+                                pressedButtons = pressedButtons - KeyEvent.keyCodeToString(keyCode)
+                            }
+                            else -> Unit
+                        }
+                    }
+                }
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -57,10 +79,15 @@ class MainActivity : ComponentActivity() {
                             },
                         contentAlignment = Alignment.Center
                     ) {
-                        Button(onClick = {
-                            startService()
-                        }) {
-                            Text(text = "Start Service")
+                        Column {
+                            Text(
+                                text = pressedButtons.toString()
+                            )
+                            Button(onClick = {
+                                startService()
+                            }) {
+                                Text(text = "Start Service")
+                            }
                         }
                     }
                 }
